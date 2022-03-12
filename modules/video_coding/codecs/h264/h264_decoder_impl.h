@@ -17,10 +17,6 @@
 // #ifdef unless needed and tested.
 #ifdef WEBRTC_USE_H264
 
-#if defined(WEBRTC_WIN) && !defined(__clang__)
-#error "See: bugs.webrtc.org/9213#c13."
-#endif
-
 #include <memory>
 
 #include "modules/video_coding/codecs/h264/include/h264.h"
@@ -40,7 +36,7 @@
 // passed to ffmpeg.
 
 extern "C" {
-#include "third_party/ffmpeg/libavcodec/avcodec.h"
+#include "ffmpeg/include/libavcodec/avcodec.h"
 }  // extern "C"
 
 #include "common_video/h264/h264_bitstream_parser.h"

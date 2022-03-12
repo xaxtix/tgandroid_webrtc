@@ -233,10 +233,7 @@ bool BaseChannel::SetRtpTransport(webrtc::RtpTransportInternal* rtp_transport) {
   rtp_transport_ = rtp_transport;
   if (rtp_transport_) {
     transport_name_ = rtp_transport_->transport_name();
-
     if (!ConnectToRtpTransport()) {
-      RTC_LOG(LS_ERROR) << "Failed to connect to the new RtpTransport for "
-                        << ToString() << ".";
       return false;
     }
     OnTransportReadyToSend(rtp_transport_->IsReadyToSend());
@@ -464,9 +461,11 @@ void BaseChannel::OnRtpPacket(const webrtc::RtpPacketReceived& parsed_packet) {
   }
 
   webrtc::Timestamp packet_time = parsed_packet.arrival_time();
-  media_channel_->OnPacketReceived(
-      parsed_packet.Buffer(),
-      packet_time.IsMinusInfinity() ? -1 : packet_time.us());
+  if (media_channel_) {
+    media_channel_->OnPacketReceived(
+            parsed_packet.Buffer(),
+            packet_time.IsMinusInfinity() ? -1 : packet_time.us());
+  }
 }
 
 void BaseChannel::UpdateRtpHeaderExtensionMap(

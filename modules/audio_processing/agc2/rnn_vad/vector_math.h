@@ -44,9 +44,7 @@ class VectorMath {
                    rtc::ArrayView<const float> y) const {
     RTC_DCHECK_EQ(x.size(), y.size());
 #if defined(WEBRTC_ARCH_X86_FAMILY)
-    if (cpu_features_.avx2) {
-      return DotProductAvx2(x, y);
-    } else if (cpu_features_.sse2) {
+    if (cpu_features_.sse2) {
       __m128 accumulator = _mm_setzero_ps();
       constexpr int kBlockSizeLog2 = 2;
       constexpr int kBlockSize = 1 << kBlockSizeLog2;
